@@ -1,0 +1,15 @@
+[00:00:00.636] Server  LOG     
+[00:00:00.636] Server  LOG       We detected TypeScript in your project and reconfigured your tsconfig.json file for you. Strict-mode is set to false by default.
+[00:00:00.636] Server  LOG       The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+[00:00:00.636] Server  LOG       	- target was set to ES2017 (For top-level `await`. Note: Next.js only polyfills for the esmodules target.)
+[00:00:00.636] Server  LOG       	- include was updated to add '.next/dev/types/**/*.ts'
+[00:00:00.636] Server  LOG     
+[00:00:00.637] Server  LOG       The following mandatory changes were made to your tsconfig.json:
+
+[00:00:00.637] Server  LOG       	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+[00:00:00.637] Server  LOG     
+[00:00:00.763] Server  LOG     ✓ Ready in 522ms
+[00:01:09.917] Server  LOG     ○ Compiling / ...
+[00:01:13.691] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:20.725] Server  ERROR   ⨯ "upstream image response timed out for" "https://api.slingacademy.com/public/sample-blog-posts/5.png"
