@@ -1,30 +1,75 @@
 "use client";
+import { useEffect, useRef } from "react";
+import { BlogPost } from "../../types/blog";
 
-import { useEffect } from "react";
 
-export default function ArticleModal({ blog, onClose }: any) {
+interface Props {
+  blog: BlogPost;
+  onClose: () => void;
+}
+
+export default function ArticleModal({ blog, onClose }: Props) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const handler = (e: KeyboardEvent) =>
-      e.key === "Escape" && onClose();
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "Tab" && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          "button, a, input, textarea"
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKey);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKey);
+    };
   }, [onClose]);
 
   return (
     <div
+      className="fixed inset-0 bg-black/60 flex items-center justify-center"
       onClick={onClose}
-      className="fixed inset-0 bg-black/60 flex justify-center items-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="article-title"
     >
       <div
+        ref={modalRef}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white p-6 max-w-2xl relative"
+        className="bg-white max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6 relative rounded"
       >
-        <button onClick={onClose} className="absolute top-2 right-2">
+        <button
+          onClick={onClose}
+          aria-label="Close article"
+          className="absolute top-2 right-2 text-xl"
+        >
           ✕
         </button>
-        <h2 className="text-xl font-bold mb-2">{blog.title}</h2>
-        <div dangerouslySetInnerHTML={{ __html: blog.content_html }} />
+
+        <h2 id="article-title" className="text-xl font-bold mb-4">
+          {blog.title}
+        </h2>
+
+        <article
+          dangerouslySetInnerHTML={{ __html: blog.content_html }}
+        />
       </div>
     </div>
   );
 }
+
